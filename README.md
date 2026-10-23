@@ -91,6 +91,6 @@ GitHub Pages 不支持 SPA rewrite。工作流会把 `dist/index.html` 复制成
 
 - [ ] `src/data/works.ts` 换成真实作品（含仓库地址、截图）
 - [ ] `src/pages/AboutPage.tsx` 真实自我介绍 + 头像
-- [ ] `ContactPage.tsx` / `Footer.tsx` 联系方式（目前是 `hello@example.com`）
-- [ ] 删除页面里「占位，待替换」这类开发提示文案
+- [x] 联系方式：`src/data/site.ts`（邮箱 `suqiyu0852@163.com`、GitHub `Menorial`），微信已移除
+- [ ] 删除作品页/关于页里「占位，待替换」这类开发提示文案
 - [ ] `index.html` 补 `og:image` 绝对地址（社交分享封面）

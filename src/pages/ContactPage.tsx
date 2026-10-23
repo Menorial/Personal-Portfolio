@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
+import { SITE_EMAIL, SITE_GITHUB } from '../data/site';
 
 /*
  * 联系页 —— 近黑画布（DESIGN.md surface-tile-3）：
  * 作为站点收尾的“深色结束语”，与前面白底页面形成明暗交替节奏。
- * 联系方式在下方 CONTACT_LINKS 里替换即可。
+ * 联系方式统一来自 src/data/site.ts。
  */
 const CONTACT_LINKS = [
-  { href: 'mailto:hello@example.com', label: '发送邮件', primary: true },
-  { href: 'https://github.com/', label: 'GitHub', primary: false, external: true },
-  { href: '#', label: '微信（占位）', primary: false },
+  { href: `mailto:${SITE_EMAIL}`, label: '发送邮件', primary: true, external: false },
+  { href: SITE_GITHUB, label: 'GitHub', primary: false, external: true },
 ];
 
 export default function ContactPage() {
@@ -37,7 +37,7 @@ export default function ContactPage() {
             delay={0.16}
             className="mx-auto mt-4 max-w-[520px] text-[21px] leading-[1.4] text-white/80"
           >
-            欢迎交流与协作。以下为占位联系方式，之后替换为真实信息。
+            欢迎交流与协作，可以通过邮件或 GitHub 找到我。
           </FadeUp>
 
           <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -54,8 +54,8 @@ export default function ContactPage() {
             ))}
           </div>
 
-          <FadeUp as="p" delay={0.5} className="mt-14 text-[12px] leading-[1.43] text-white/40">
-            替换位置：src/pages/ContactPage.tsx 中的 CONTACT_LINKS
+          <FadeUp as="p" delay={0.5} className="mt-12 text-[14px] leading-[1.6] text-white/45">
+            {SITE_EMAIL}
           </FadeUp>
         </div>
       </section>

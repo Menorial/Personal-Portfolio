@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { SITE_EMAIL, SITE_GITHUB } from '../data/site';
 
 /*
  * DESIGN.md footer — parchment canvas, dense-link columns (17px / 2.41 leading),
@@ -11,11 +12,10 @@ const NAV_COLUMN = [
   { to: '/contact', label: '联系' },
 ];
 
-// 占位链接：之后替换为真实联系方式
+// 联系方式统一来自 src/data/site.ts
 const CONTACT_COLUMN = [
-  { href: 'mailto:hello@example.com', label: '邮箱', external: false },
-  { href: 'https://github.com/', label: 'GitHub', external: true },
-  { href: '#', label: '微信（占位）', external: false },
+  { href: `mailto:${SITE_EMAIL}`, label: '邮箱', external: false },
+  { href: SITE_GITHUB, label: 'GitHub', external: true },
 ];
 
 export default function Footer() {
@@ -27,7 +27,7 @@ export default function Footer() {
           <div className="sm:col-span-2">
             <p className="text-[15px] font-semibold tracking-[0.2em] text-ink">QI YU</p>
             <p className="mt-4 max-w-[280px] text-[14px] leading-[1.43] text-muted-48">
-              以代码与智能，重塑数字世界的可能。个人作品集（占位简介，之后替换）。
+              以代码与智能，重塑数字世界的可能。
             </p>
           </div>
 
@@ -66,8 +66,8 @@ export default function Footer() {
 
         {/* Legal row */}
         <div className="mt-12 flex flex-col gap-2 border-t border-black/10 pt-6 text-[12px] leading-none text-muted-48 sm:flex-row sm:items-center sm:justify-between">
-          <p className="m-0">© 2025 祁玉 · 保留所有权利</p>
-          <p className="m-0">个人作品集 · 内容为占位，待替换</p>
+          <p className="m-0">© {new Date().getFullYear()} 祁玉 · 保留所有权利</p>
+          <p className="m-0">个人作品集</p>
         </div>
       </div>
     </footer>

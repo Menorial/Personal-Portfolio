@@ -1,3 +1,5 @@
+import { SITE_GITHUB } from './site';
+
 /*
  * 作品数据 —— 增删项目只需改本文件：
  *
@@ -9,7 +11,7 @@
  *   title      作品名（中文）
  *   tagline    一句话简介
  *   tags       技术栈标签（可选，卡片与详情页展示）——示例，替换为真实技术栈
- *   githubHref 仓库地址（如 https://github.com/你的用户名/项目名）
+ *   githubHref 仓库地址（单个项目的仓库；暂时都指向个人主页）
  *   imageHref  作品图（可选）：
  *              - 本地图：放 public/images/ 下，填 '/images/xxx.png'
  *              - 外链：直接填图片 URL
@@ -30,27 +32,27 @@ export const works: WorkItem[] = [
     title: '示例项目一',
     tagline: '项目简介占位：用一句话说明这个作品做了什么、解决了什么问题。',
     tags: ['AI 应用开发', 'React'],
-    githubHref: 'https://github.com/',
+    githubHref: SITE_GITHUB,
   },
   {
     id: 'w2',
     title: '示例项目二',
     tagline: '项目简介占位：突出技术栈与亮点，替换为真实描述即可。',
     tags: ['爬虫', 'Python'],
-    githubHref: 'https://github.com/',
+    githubHref: SITE_GITHUB,
   },
   {
     id: 'w3',
     title: '示例项目三',
     tagline: '项目简介占位：交代背景、你的角色与最终成果。',
     tags: ['全栈', 'Node.js'],
-    githubHref: 'https://github.com/',
+    githubHref: SITE_GITHUB,
   },
   {
     id: 'w4',
     title: '示例项目四',
     tagline: '项目简介占位：可补充数据、演示链接或上线地址。',
     tags: ['自动化', '工具'],
-    githubHref: 'https://github.com/',
+    githubHref: SITE_GITHUB,
   },
 ];

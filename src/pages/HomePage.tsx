@@ -4,10 +4,10 @@ import heroVideo from '../assets/hero-1080.mp4';
 import heroPoster from '../assets/hero-poster.jpg';
 
 /*
- * 首屏背景视频改为自托管（原第三方 CloudFront 外链 6.28 MB）：
- * - src/assets/hero-1080.mp4：1080p / CRF 28 / 无音轨，2.5 MB
- *   分辨率保持 1080p 而不是压到 720p —— 720p 在 1920 宽屏上被放大后明显发虚
- * - src/assets/hero-poster.jpg：首帧封面 69 KB，视频没就绪也不会黑屏
+ * 首屏背景视频自托管（原第三方 CloudFront 外链不可控，随时可能失效）：
+ * - src/assets/hero-1080.mp4：1920×1080 原片，6.28 MB，未做任何转码
+ *   试过 720p（宽屏放大后发虚）和 1080p CRF28（细节略软），最终保留原文件
+ * - src/assets/hero-poster.jpg：首帧封面 98 KB，视频没就绪也不会黑屏
  * - 移动端与「减少动态效果」偏好下只加载封面图，省掉整段视频
  * 从 src 引入而不是放 public：Vite 会给文件名加内容哈希，
  * 换素材后 URL 自动变化，浏览器不会继续用旧缓存。

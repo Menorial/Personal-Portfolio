@@ -22,20 +22,24 @@ npm run preview  # 本地预览构建产物
 
 ## 首屏视频
 
-`src/assets/hero-1080.mp4`（1080p / CRF 28 / 无音轨，约 2.5 MB，原第三方外链为 6.28 MB）与
-`src/assets/hero-poster.jpg`（首帧封面，69 KB）。
+`src/assets/hero-1080.mp4`（1920×1080 / 24fps / 原片，6.28 MB，逐字节未转码）与
+`src/assets/hero-poster.jpg`（首帧封面，98 KB）。
 
-> 分辨率优先：小于 1080p 的源在 1920 宽屏上会被放大，肉眼可见发虚，所以宁可体积大一点也保留 1080p。
+> 这个文件就是最早用的那段素材，原样保留、不做二次压缩：任何转码（哪怕是 1080p）
+> 都会让细节变软，而这个粒子球是整站视觉主体，清晰度优先。
 
-替换成自己的素材：
+替换成自己的素材（原文件直接放进去即可，不必转码）：
 
 ```bash
-# 视频：保持 1080p、CRF 28、去掉音轨、faststart 便于边下边播
+cp 你的视频.mp4 src/assets/hero-1080.mp4
+ffmpeg -i src/assets/hero-1080.mp4 -frames:v 1 -q:v 3 src/assets/hero-poster.jpg
+```
+
+如果以后确实要压体积，再考虑转码（会损失一点锐度）：
+
+```bash
 ffmpeg -i 你的视频.mp4 -vf "scale=1920:-2" -c:v libx264 -crf 28 -preset slow -an \
        -movflags +faststart src/assets/hero-1080.mp4
-
-# 封面：取首帧
-ffmpeg -i src/assets/hero-1080.mp4 -frames:v 1 -q:v 5 src/assets/hero-poster.jpg
 ```
 
 移动端（≤ 768px）与系统开启「减少动态效果」时只加载封面图，不加载视频。

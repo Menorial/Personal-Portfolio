@@ -1,0 +1,138 @@
+/*
+ * DESIGN.md type system.
+ * SF Pro is proprietary: -apple-system/BlinkMacSystemFont resolves to real SF Pro
+ * on Apple devices; Inter (self-hosted via @fontsource, imported in main.tsx)
+ * covers every other platform. CJK falls back to PingFang / Microsoft YaHei.
+ *
+ * 字体不再从 jsDelivr 用 @import 远程加载（4 个串行阻塞请求 + 国内不稳定），
+ * 改为本地依赖，只引入实际用到的 400 / 600 两个字重。
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Inter —— 只保留 latin 子集与 woff2 单格式：
+ * fontsource 默认的 400.css 会把 cyrillic / greek / latin-ext 全打进来，
+ * 而本站只有英文与数字需要 Inter（中文自动回退系统字体）。
+ * 每个字重因此只产出一个 24 KB 的文件，而不是 8 个。
+ */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('@fontsource/inter/files/inter-latin-400-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2');
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: #ffffff;
+  /* DESIGN.md body token: 17px / 400 / 1.47 / -0.374px */
+  color: #1d1d1f;
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Segoe UI',
+    sans-serif;
+}
+
+@layer components {
+  /* 淡入上浮（原 framer-motion FadeUp 的等价实现，见 components/FadeUp.tsx） */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(var(--fade-y, 24px));
+    transition:
+      opacity var(--fade-duration, 0.7s) cubic-bezier(0.22, 1, 0.36, 1) var(--fade-delay, 0s),
+      transform var(--fade-duration, 0.7s) cubic-bezier(0.22, 1, 0.36, 1) var(--fade-delay, 0s);
+  }
+  .fade-up--in {
+    opacity: 1;
+    transform: none;
+  }
+  /* 用户要求减少动效时直接显示终态 */
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* DESIGN.md button-primary — Action Blue pill, the only "click me" signal */
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-primary px-[22px] py-[11px] text-[17px] leading-none text-white;
+    transition:
+      background-color 0.15s ease,
+      transform 0.1s ease;
+  }
+  .btn-primary:hover {
+    background-color: #0071e3;
+  }
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+  .btn-primary:focus-visible {
+    outline: 2px solid #0071e3;
+    outline-offset: 2px;
+  }
+
+  /* DESIGN.md button-secondary-pill — ghost pill (light surfaces) */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full border border-primary bg-transparent px-[22px] py-[11px] text-[17px] leading-none text-primary;
+    transition:
+      background-color 0.15s ease,
+      transform 0.1s ease;
+  }
+  .btn-ghost:hover {
+    background-color: rgba(0, 102, 204, 0.06);
+  }
+  .btn-ghost:active {
+    transform: scale(0.95);
+  }
+  .btn-ghost:focus-visible {
+    outline: 2px solid #0071e3;
+    outline-offset: 2px;
+  }
+
+  /* Ghost pill variant for dark tiles — Sky Link Blue per text-link-on-dark */
+  .btn-ghost-dark {
+    @apply inline-flex items-center justify-center rounded-full border border-sky bg-transparent px-[22px] py-[11px] text-[17px] leading-none text-sky;
+    transition:
+      background-color 0.15s ease,
+      transform 0.1s ease;
+  }
+  .btn-ghost-dark:hover {
+    background-color: rgba(41, 151, 255, 0.12);
+  }
+  .btn-ghost-dark:active {
+    transform: scale(0.95);
+  }
+  .btn-ghost-dark:focus-visible {
+    outline: 2px solid #2997ff;
+    outline-offset: 2px;
+  }
+
+  /* DESIGN.md button-pearl-capsule — product-card secondary (3px soft ring) */
+  .btn-pearl {
+    @apply inline-flex items-center justify-center rounded-[11px] bg-pearl px-[14px] py-[8px] text-[14px] leading-none text-muted-80;
+    border: 3px solid rgba(0, 0, 0, 0.04);
+    transition: transform 0.1s ease;
+  }
+  .btn-pearl:active {
+    transform: scale(0.95);
+  }
+}

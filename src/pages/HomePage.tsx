@@ -1,15 +1,19 @@
 import { useEffect, useState } from 'react';
 import { FadeUp } from '../components/FadeUp';
+import heroVideo from '../assets/hero-1080.mp4';
+import heroPoster from '../assets/hero-poster.jpg';
 
 /*
  * 首屏背景视频改为自托管（原第三方 CloudFront 外链 6.28 MB）：
- * - public/hero.mp4：720p / CRF 30 / 无音轨，1.04 MB，体积降到原来的 1/6
- * - public/hero-poster.jpg：首帧封面 38 KB，视频没就绪也不会黑屏
+ * - src/assets/hero-1080.mp4：1080p / CRF 28 / 无音轨，2.5 MB
+ *   分辨率保持 1080p 而不是压到 720p —— 720p 在 1920 宽屏上被放大后明显发虚
+ * - src/assets/hero-poster.jpg：首帧封面 69 KB，视频没就绪也不会黑屏
  * - 移动端与「减少动态效果」偏好下只加载封面图，省掉整段视频
- * 路径都走 BASE_URL，GitHub Pages 子目录部署不会 404。
+ * 从 src 引入而不是放 public：Vite 会给文件名加内容哈希，
+ * 换素材后 URL 自动变化，浏览器不会继续用旧缓存。
  */
-const VIDEO_SRC = `${import.meta.env.BASE_URL}hero.mp4`;
-const POSTER_SRC = `${import.meta.env.BASE_URL}hero-poster.jpg`;
+const VIDEO_SRC = heroVideo;
+const POSTER_SRC = heroPoster;
 
 // 首屏文案按用户要求保持现状（英文签名），仅字族已切为 SF Pro / Inter
 const INTRO_WORDS = ['HI,', "I'M"];

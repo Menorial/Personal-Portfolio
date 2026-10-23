@@ -22,22 +22,25 @@ npm run preview  # 本地预览构建产物
 
 ## 首屏视频
 
-`public/hero.mp4`（720p / CRF 30 / 无音轨，约 1 MB，原第三方外链为 6.28 MB）与
-`public/hero-poster.jpg`（首帧封面，38 KB）。
+`src/assets/hero-1080.mp4`（1080p / CRF 28 / 无音轨，约 2.5 MB，原第三方外链为 6.28 MB）与
+`src/assets/hero-poster.jpg`（首帧封面，69 KB）。
+
+> 分辨率优先：小于 1080p 的源在 1920 宽屏上会被放大，肉眼可见发虚，所以宁可体积大一点也保留 1080p。
 
 替换成自己的素材：
 
 ```bash
-# 视频：降到 1280 宽、CRF 30、去掉音轨、faststart 便于边下边播
-ffmpeg -i 你的视频.mp4 -vf "scale=1280:-2" -c:v libx264 -crf 30 -preset slow -an \
-       -movflags +faststart public/hero.mp4
+# 视频：保持 1080p、CRF 28、去掉音轨、faststart 便于边下边播
+ffmpeg -i 你的视频.mp4 -vf "scale=1920:-2" -c:v libx264 -crf 28 -preset slow -an \
+       -movflags +faststart src/assets/hero-1080.mp4
 
 # 封面：取首帧
-ffmpeg -i public/hero.mp4 -frames:v 1 -q:v 5 public/hero-poster.jpg
+ffmpeg -i src/assets/hero-1080.mp4 -frames:v 1 -q:v 5 src/assets/hero-poster.jpg
 ```
 
-移动端（≤ 768px）与系统开启「减少动态效果」时只加载封面图，不加载视频；
-视频与封面的路径都基于 `import.meta.env.BASE_URL`，子目录部署不会 404。
+移动端（≤ 768px）与系统开启「减少动态效果」时只加载封面图，不加载视频。
+素材从 `src/assets` 引入而不是放 `public`，Vite 会加内容哈希，换素材后 URL 自动变化，
+访客不会继续看浏览器里缓存的旧版。
 
 ## 部署到 GitHub Pages
 

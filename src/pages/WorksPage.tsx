@@ -73,14 +73,14 @@ function WorkCard({
         <p className="mt-3 text-[12px] leading-[1.43] text-muted-48/80">{work.tags.join(' · ')}</p>
       )}
 
-      {/* 链接行：整卡已可点，这里保留 GitHub 独立入口 */}
-      <div className="relative z-20 mt-5 flex items-center justify-between border-t border-black/5 pt-4">
+      {/* 链接行：整卡已可点（文字落在铺满卡片的链接上），GitHub 单独提升层级 */}
+      <div className="mt-5 flex items-center justify-between border-t border-black/5 pt-4">
         <span className="text-[17px] text-primary group-hover:opacity-70">查看详情</span>
         <a
           href={work.githubHref}
           target="_blank"
           rel="noreferrer"
-          className="text-[17px] text-muted-48 transition-colors hover:text-primary"
+          className="relative z-20 text-[17px] text-muted-48 transition-colors hover:text-primary"
         >
           GitHub ↗
         </a>

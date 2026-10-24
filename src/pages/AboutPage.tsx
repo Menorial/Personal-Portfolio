@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
+import { INTRO, SKILLS, TIMELINE, type Skill } from '../data/about';
 
 /*
- * 关于页（占位内容）——白底居中，正文 17px / 1.47（DESIGN.md body token）
+ * 关于页 —— 白底居中，正文 17px / 1.47（DESIGN.md body token）
+ * 文案全部来自 src/data/about.ts，改内容不用碰 JSX。
  */
-const SKILL_PLACEHOLDERS = ['技能一（占位）', '技能二（占位）', '技能三（占位）', '技能四（占位）'];
+const LEVELS: Array<Skill['level']> = ['熟练', '了解'];
 
 export default function AboutPage() {
   useEffect(() => {
@@ -32,27 +34,54 @@ export default function AboutPage() {
           </FadeUp>
 
           <div className="mt-6 space-y-5 text-[17px] leading-[1.47] text-ink/90">
-            <FadeUp as="p" delay={0.14} className="m-0">
-              这里是自我介绍（占位）。用两到三段话介绍你的背景、专注方向与兴趣——比如如何进入开发、最享受解决哪类问题。
-            </FadeUp>
-            <FadeUp as="p" delay={0.2} className="m-0">
-              第二段占位：补充你的经历亮点、代表性成果或合作方式偏好，让访客在进入作品页前先了解“你是谁”。
-            </FadeUp>
-            <FadeUp as="p" delay={0.26} className="m-0">
-              第三段占位：可写一句个人信念或联系方式引导（完整联系信息在“联系”页）。
-            </FadeUp>
+            {INTRO.map((paragraph, i) => (
+              <FadeUp key={paragraph} as="p" delay={0.14 + i * 0.06} className="m-0">
+                {paragraph}
+              </FadeUp>
+            ))}
           </div>
 
-          {/* 技能方向 —— pearl capsule chips */}
+          {/* 经历时间线 */}
+          <FadeUp as="h2" delay={0.1} className="mt-20 text-[34px] font-semibold leading-[1.47] text-ink">
+            经历
+          </FadeUp>
+          <ol className="relative mt-8 list-none space-y-9 border-l border-hairline pl-7">
+            {TIMELINE.map((item, i) => (
+              <li key={`${item.year}-${item.title}`} className="relative">
+                <span
+                  aria-hidden="true"
+                  className="absolute -left-[33px] top-2 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-white"
+                />
+                <FadeUp as="div" delay={0.08 + i * 0.06}>
+                  <p className="m-0 text-[12px] font-semibold tracking-[0.14em] text-muted-48">{item.year}</p>
+                  <h3 className="mt-1.5 text-[19px] font-semibold leading-[1.3] text-ink">{item.title}</h3>
+                  <p className="mb-0 mt-1.5 text-[15px] leading-[1.6] text-muted-48">{item.desc}</p>
+                </FadeUp>
+              </li>
+            ))}
+          </ol>
+
+          {/* 技能方向 —— 按熟练度分组 */}
           <FadeUp as="h2" delay={0.1} className="mt-20 text-[34px] font-semibold leading-[1.47] text-ink">
             技能方向
           </FadeUp>
-          <div className="mt-6 flex flex-wrap gap-3">
-            {SKILL_PLACEHOLDERS.map((skill, i) => (
-              <FadeUp key={skill} as="span" delay={0.14 + i * 0.06} duration={0.5} y={16}>
-                <span className="btn-pearl">{skill}</span>
-              </FadeUp>
-            ))}
+          <div className="mt-6 space-y-6">
+            {LEVELS.map((level) => {
+              const items = SKILLS.filter((skill) => skill.level === level);
+              if (items.length === 0) return null;
+              return (
+                <div key={level}>
+                  <p className="m-0 text-[12px] font-semibold tracking-[0.14em] text-muted-48">{level}</p>
+                  <div className="mt-3 flex flex-wrap gap-3">
+                    {items.map((skill, i) => (
+                      <FadeUp key={skill.name} as="span" delay={0.06 + i * 0.05} duration={0.5} y={16}>
+                        <span className="btn-pearl">{skill.name}</span>
+                      </FadeUp>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

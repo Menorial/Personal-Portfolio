@@ -87,10 +87,22 @@ VITE_BASE=/ npm run build
 GitHub Pages 不支持 SPA rewrite。工作流会把 `dist/index.html` 复制成 `dist/404.html`，
 深链接（如 `/work/w1`）被刷新时由 404 页接管，再由前端路由还原到正确页面。
 
+## 内容维护（改内容只需要动这三个文件）
+
+| 文件 | 内容 |
+|---|---|
+| `src/data/works.ts` | 作品列表：标题、简介、标签、角色、周期、成果指标、难点、截图、仓库/演示地址 |
+| `src/data/about.ts` | 关于页：自我介绍段落、经历时间线、技能（熟练/了解） |
+| `src/data/site.ts` | 联系方式：邮箱、GitHub |
+
+作品详情页 `/work/:id` 完全由 `works.ts` 驱动，字段留空时对应区块自动不渲染。
+
 ## 上线前待办
 
-- [ ] `src/data/works.ts` 换成真实作品（含仓库地址、截图）
-- [ ] `src/pages/AboutPage.tsx` 真实自我介绍 + 头像
+- [ ] `src/data/works.ts` 换成真实作品（角色、周期、成果指标、技术难点）
+- [ ] `src/data/about.ts` 真实自我介绍、经历时间线、技能
 - [x] 联系方式：`src/data/site.ts`（邮箱 `suqiyu0852@163.com`、GitHub `Menorial`），微信已移除
-- [ ] 删除作品页/关于页里「占位，待替换」这类开发提示文案
-- [ ] `index.html` 补 `og:image` 绝对地址（社交分享封面）
+- [x] 作品详情页结构化：角色 / 周期 / 成果指标 / 关键点 / 图集 / 演示链接
+- [x] 技术标签筛选、自定义 404、复制邮箱、Lightbox 焦点陷阱
+- [x] `index.html` 社交分享图 `og.jpg`（1200×630，绝对地址）
+- [ ] 作品截图：放进 `public/images/`，在 `works.ts` 填 `imageHref` 和 `gallery`

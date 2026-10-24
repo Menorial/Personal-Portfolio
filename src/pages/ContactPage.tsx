@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import { SITE_EMAIL, SITE_GITHUB } from '../data/site';
@@ -14,9 +14,27 @@ const CONTACT_LINKS = [
 ];
 
 export default function ContactPage() {
+  const [copied, setCopied] = useState(false);
+
   useEffect(() => {
     document.title = '联系 — 祁玉';
   }, []);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timer = window.setTimeout(() => setCopied(false), 1800);
+    return () => window.clearTimeout(timer);
+  }, [copied]);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(SITE_EMAIL);
+      setCopied(true);
+    } catch {
+      // 浏览器不支持剪贴板 API（或非 HTTPS）时，退化为直接打开邮件客户端
+      window.location.href = `mailto:${SITE_EMAIL}`;
+    }
+  };
 
   return (
     <main className="min-h-screen bg-tile-3">
@@ -54,8 +72,15 @@ export default function ContactPage() {
             ))}
           </div>
 
-          <FadeUp as="p" delay={0.5} className="mt-12 text-[14px] leading-[1.6] text-white/45">
-            {SITE_EMAIL}
+          <FadeUp as="div" delay={0.5} className="mt-12 flex flex-wrap items-center justify-center gap-3">
+            <span className="text-[14px] text-white/45">{SITE_EMAIL}</span>
+            <button
+              type="button"
+              onClick={copyEmail}
+              className="rounded-full border border-white/20 px-3 py-1 text-[12px] text-white/60 transition-colors hover:border-white/40 hover:text-white"
+            >
+              {copied ? '已复制' : '复制邮箱'}
+            </button>
           </FadeUp>
         </div>
       </section>

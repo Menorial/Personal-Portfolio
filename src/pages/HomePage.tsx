@@ -27,7 +27,6 @@ const PAUSE_KEY = 'hero-video-paused';
 
 export default function HomePage() {
   const [useStillImage, setUseStillImage] = useState(false);
-  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [playing, setPlaying] = useState(() => {
     try {
       return localStorage.getItem(PAUSE_KEY) !== '1';
@@ -48,30 +47,6 @@ export default function HomePage() {
     return () => query.removeEventListener('change', sync);
   }, []);
 
-  // 视频延后到首屏渲染完再加载：先出封面和文字，避免 6 MB 视频抢首屏带宽
-  useEffect(() => {
-    if (useStillImage) return;
-
-    let cancelled = false;
-    const start = () => {
-      if (!cancelled) setShouldLoadVideo(true);
-    };
-
-    if (typeof window.requestIdleCallback === 'function') {
-      const handle = window.requestIdleCallback(start, { timeout: 1500 });
-      return () => {
-        cancelled = true;
-        window.cancelIdleCallback(handle);
-      };
-    }
-
-    const timer = window.setTimeout(start, 300);
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
-    };
-  }, [useStillImage]);
-
   // 播放 / 暂停与持久化
   useEffect(() => {
     const video = videoRef.current;
@@ -86,25 +61,23 @@ export default function HomePage() {
     } catch {
       /* 隐私模式下忽略 */
     }
-  }, [playing, useStillImage, shouldLoadVideo]);
+  }, [playing, useStillImage]);
 
   return (
     <main>
       {/* 首屏 */}
       <section className="relative h-[100svh] w-full overflow-hidden bg-black">
-        {/* 封面先出，视频就绪后覆盖上去 */}
-        {(useStillImage || !shouldLoadVideo) && (
+        {useStillImage ? (
           <img
             src={POSTER_SRC}
             alt=""
             aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover"
           />
-        )}
-        {!useStillImage && shouldLoadVideo && (
+        ) : (
           <video
             ref={videoRef}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full transform-gpu object-cover"
             src={VIDEO_SRC}
             poster={POSTER_SRC}
             autoPlay={playing}
@@ -184,7 +157,7 @@ export default function HomePage() {
             onClick={() => setPlaying((value) => !value)}
             aria-label={playing ? '暂停背景视频' : '播放背景视频'}
             aria-pressed={!playing}
-            className="absolute bottom-6 right-6 flex h-10 w-10 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur transition-colors hover:bg-black/50"
+            className="absolute bottom-6 right-6 flex h-10 w-10 items-center justify-center rounded-full bg-black/55 text-white transition-colors hover:bg-black/75"
           >
             {playing ? (
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">

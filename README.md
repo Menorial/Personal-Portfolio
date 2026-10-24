@@ -91,7 +91,7 @@ GitHub Pages 不支持 SPA rewrite。工作流会把 `dist/index.html` 复制成
 
 | 文件 | 内容 |
 |---|---|
-| `src/data/works.ts` | 作品列表：标题、简介、标签、角色、周期、成果指标、难点、截图、仓库/演示地址 |
+| `src/data/works.ts` | 作品列表：标题、简介、标签、角色、项目介绍、难点、截图、仓库/演示地址 |
 | `src/data/about.ts` | 关于页：自我介绍段落、经历时间线、技能（熟练/了解） |
 | `src/data/site.ts` | 联系方式：邮箱、GitHub |
 
@@ -99,10 +99,10 @@ GitHub Pages 不支持 SPA rewrite。工作流会把 `dist/index.html` 复制成
 
 ## 上线前待办
 
-- [ ] `src/data/works.ts` 换成真实作品（角色、周期、成果指标、技术难点）
+- [ ] `src/data/works.ts` 换成真实作品（角色、项目介绍、技术难点）
 - [ ] `src/data/about.ts` 真实自我介绍、经历时间线、技能
 - [x] 联系方式：`src/data/site.ts`（邮箱 `suqiyu0852@163.com`、GitHub `Menorial`），微信已移除
-- [x] 作品详情页结构化：角色 / 周期 / 成果指标 / 关键点 / 图集 / 演示链接
+- [x] 作品详情页结构化：角色 / 项目介绍 / 关键点 / 图集 / 演示链接
 - [x] 技术标签筛选、自定义 404、复制邮箱、Lightbox 焦点陷阱
 - [x] `index.html` 社交分享图 `og.jpg`（1200×630，绝对地址）
 - [ ] 作品截图：放进 `public/images/`，在 `works.ts` 填 `imageHref` 和 `gallery`

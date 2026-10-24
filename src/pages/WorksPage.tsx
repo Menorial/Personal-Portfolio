@@ -60,18 +60,6 @@ function WorkCard({
       {/* 简介 */}
       <p className="mt-1.5 flex-1 text-[14px] leading-[1.43] text-muted-48">{work.tagline}</p>
 
-      {/* 关键成果：只显示前两条，详情页看全部 */}
-      {work.metrics && work.metrics.length > 0 && (
-        <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-black/5 pt-4">
-          {work.metrics.slice(0, 2).map((metric) => (
-            <div key={metric.label}>
-              <dt className="text-[11px] tracking-[0.06em] text-muted-48">{metric.label}</dt>
-              <dd className="m-0 mt-0.5 text-[15px] font-semibold text-ink">{metric.value}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
-
       {/* 技术标签 */}
       {work.tags && work.tags.length > 0 && (
         <p className="mt-3 text-[12px] leading-[1.43] text-muted-48/80">{work.tags.join(' · ')}</p>

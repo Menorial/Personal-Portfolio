@@ -6,7 +6,7 @@ import { works } from '../data/works';
 
 /*
  * 作品详情页 /work/:id —— 完全由 src/data/works.ts 驱动：
- * 角色 / 周期 / 成果指标 / 项目介绍 / 关键点 / 图集 / 技术栈，
+ * 角色 / 项目介绍 / 关键点 / 图集 / 技术栈，
  * 字段为空时对应区块自动不渲染。
  */
 export default function WorkDetailPage() {
@@ -52,9 +52,9 @@ export default function WorkDetailPage() {
           >
             {work.title}
           </FadeUp>
-          {(work.role || work.period) && (
+          {work.role && (
             <FadeUp as="p" delay={0.16} className="mt-3 text-[15px] text-muted-48">
-              {[work.role, work.period].filter(Boolean).join(' · ')}
+              {work.role}
             </FadeUp>
           )}
 
@@ -73,18 +73,6 @@ export default function WorkDetailPage() {
               </div>
             )}
           </FadeUp>
-
-          {/* 关键成果 */}
-          {work.metrics && work.metrics.length > 0 && (
-            <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3">
-              {work.metrics.map((metric) => (
-                <FadeUp as="div" key={metric.label}>
-                  <p className="m-0 text-[12px] tracking-[0.08em] text-muted-48">{metric.label}</p>
-                  <p className="m-0 mt-1 text-[24px] font-semibold leading-[1.2] text-ink">{metric.value}</p>
-                </FadeUp>
-              ))}
-            </div>
-          )}
 
           {/* 项目介绍 */}
           {summaryParagraphs.length > 0 && (

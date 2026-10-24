@@ -17,17 +17,11 @@ import { SITE_GITHUB } from './site';
  *              - 外链：直接填图片 URL
  *              不填则显示灰色占位块
  *   role       你的角色（可选），如「独立开发」「前端负责人」
- *   period     项目周期（可选），如「2025.03 – 2025.08」
- *   metrics    关键成果（可选）：卡片显示前 2 条，详情页全部显示
+ *   summary    项目介绍（可选，段落用空行分隔）
  *   highlights 技术难点 / 解法（可选）：详情页按要点列出
  *   gallery    额外截图（可选）：详情页以图集展示
  *   demoHref   在线演示 / 录屏地址（可选）
  */
-export interface WorkMetric {
-  label: string;
-  value: string;
-}
-
 export interface WorkItem {
   id: string;
   title: string;
@@ -35,10 +29,8 @@ export interface WorkItem {
   tags?: string[];
   githubHref: string;
   imageHref?: string;
-  summary?: string;
   role?: string;
-  period?: string;
-  metrics?: WorkMetric[];
+  summary?: string;
   highlights?: string[];
   gallery?: string[];
   demoHref?: string;
@@ -56,13 +48,8 @@ export const works: WorkItem[] = [
     tagline: '项目简介占位：用一句话说明这个作品做了什么、解决了什么问题。',
     tags: ['AI 应用开发', 'React'],
     githubHref: SITE_GITHUB,
-    summary: PLACEHOLDER_SUMMARY,
     role: '独立开发（待确认）',
-    period: '20XX.XX – 20XX.XX',
-    metrics: [
-      { label: '使用量', value: '待填写' },
-      { label: '关键指标', value: '待填写' },
-    ],
+    summary: PLACEHOLDER_SUMMARY,
     highlights: ['待填写：这个项目最难的技术点，以及你当时怎么解决的。'],
   },
   {
@@ -71,13 +58,8 @@ export const works: WorkItem[] = [
     tagline: '项目简介占位：突出技术栈与亮点，替换为真实描述即可。',
     tags: ['爬虫', 'Python'],
     githubHref: SITE_GITHUB,
-    summary: PLACEHOLDER_SUMMARY,
     role: '独立开发（待确认）',
-    period: '20XX.XX – 20XX.XX',
-    metrics: [
-      { label: '数据规模', value: '待填写' },
-      { label: '稳定性', value: '待填写' },
-    ],
+    summary: PLACEHOLDER_SUMMARY,
     highlights: ['待填写：数据抓取或清洗上遇到的坑，以及解决方式。'],
   },
   {
@@ -86,10 +68,8 @@ export const works: WorkItem[] = [
     tagline: '项目简介占位：交代背景、你的角色与最终成果。',
     tags: ['全栈', 'Node.js'],
     githubHref: SITE_GITHUB,
-    summary: PLACEHOLDER_SUMMARY,
     role: '独立开发（待确认）',
-    period: '20XX.XX – 20XX.XX',
-    metrics: [{ label: '成果指标', value: '待填写' }],
+    summary: PLACEHOLDER_SUMMARY,
   },
   {
     id: 'w4',
@@ -97,9 +77,8 @@ export const works: WorkItem[] = [
     tagline: '项目简介占位：可补充数据、演示链接或上线地址。',
     tags: ['自动化', '工具'],
     githubHref: SITE_GITHUB,
-    summary: PLACEHOLDER_SUMMARY,
     role: '独立开发（待确认）',
-    period: '20XX.XX – 20XX.XX',
+    summary: PLACEHOLDER_SUMMARY,
     highlights: ['待填写：这个工具解决了什么重复劳动，节省了多少时间。'],
   },
 ];

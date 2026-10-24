@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import Lightbox from '../components/Lightbox';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { works, type WorkItem } from '../data/works';
 
 /*
@@ -94,9 +95,7 @@ export default function WorksPage() {
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [lightbox, setLightbox] = useState<{ image: string; title: string } | null>(null);
 
-  useEffect(() => {
-    document.title = '作品 — 祁玉';
-  }, []);
+  usePageMeta('作品 — 祁玉', '精选项目与探索：AI 应用、自动化工具与全栈开发。');
 
   const visibleWorks = activeTag ? works.filter((work) => work.tags?.includes(activeTag)) : works;
 

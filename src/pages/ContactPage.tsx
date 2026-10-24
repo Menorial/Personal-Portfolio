@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import { SITE_EMAIL, SITE_GITHUB } from '../data/site';
+import { usePageMeta } from '../hooks/usePageMeta';
 
 /*
  * 联系页 —— 近黑画布（DESIGN.md surface-tile-3）：
@@ -16,9 +17,7 @@ const CONTACT_LINKS = [
 export default function ContactPage() {
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    document.title = '联系 — 祁玉';
-  }, []);
+  usePageMeta('联系 — 祁玉', '通过邮箱或 GitHub 联系祁玉。');
 
   useEffect(() => {
     if (!copied) return;
@@ -73,7 +72,7 @@ export default function ContactPage() {
           </div>
 
           <FadeUp as="div" delay={0.5} className="mt-12 flex flex-wrap items-center justify-center gap-3">
-            <span className="text-[14px] text-white/45">{SITE_EMAIL}</span>
+            <span className="text-[14px] text-white/60">{SITE_EMAIL}</span>
             <button
               type="button"
               onClick={copyEmail}

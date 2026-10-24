@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import { INTRO, SKILLS, TIMELINE, type Skill } from '../data/about';
@@ -10,9 +10,7 @@ import { INTRO, SKILLS, TIMELINE, type Skill } from '../data/about';
 const LEVELS: Array<Skill['level']> = ['熟练', '了解'];
 
 export default function AboutPage() {
-  useEffect(() => {
-    document.title = '关于 — 祁玉';
-  }, []);
+  usePageMeta('关于 — 祁玉', '祁玉的个人介绍：背景、专注方向与技能。');
 
   return (
     <main className="min-h-screen bg-white">

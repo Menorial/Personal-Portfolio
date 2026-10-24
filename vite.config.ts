@@ -1,4 +1,6 @@
-import { defineConfig } from 'vite';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
 /*
@@ -26,7 +28,39 @@ function resolveBase(): string {
   return `/${name}/`;
 }
 
+/** 部署地址；绑定自定义域名时与 index.html 里的 canonical / og:url 一起改 */
+const SITE_URL = 'https://menorial.github.io/Personal-Portfolio';
+
+/*
+ * 构建时生成 sitemap.xml 与 robots.txt。
+ * 作品详情页从 works.ts 里正则取 id，新增作品不用再手动维护清单。
+ */
+function sitemapPlugin(): Plugin {
+  return {
+    name: 'generate-sitemap',
+    apply: 'build',
+    closeBundle() {
+      const worksFile = resolve('src/data/works.ts');
+      const ids = existsSync(worksFile)
+        ? Array.from(readFileSync(worksFile, 'utf8').matchAll(/\bid:\s*'([^']+)'/g), (match) => match[1])
+        : [];
+      const routes = ['/', '/work', '/about', '/contact', ...ids.map((id) => `/work/${id}`)];
+
+      const urls = routes.map((route) => `  <url><loc>${SITE_URL}${route}</loc></url>`).join('\n');
+      writeFileSync(
+        resolve('dist/sitemap.xml'),
+        `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
+      );
+
+      writeFileSync(
+        resolve('dist/robots.txt'),
+        `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`,
+      );
+    },
+  };
+}
+
 export default defineConfig({
   base: resolveBase(),
-  plugins: [react()],
+  plugins: [react(), sitemapPlugin()],
 });

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { Link } from 'react-router-dom';
 import { FadeUp } from '../components/FadeUp';
 
@@ -7,9 +7,7 @@ import { FadeUp } from '../components/FadeUp';
  * 给访客两个明确的出口，避免“我点错了？”的困惑。
  */
 export default function NotFoundPage() {
-  useEffect(() => {
-    document.title = '页面不存在 — 祁玉';
-  }, []);
+  usePageMeta('页面不存在 — 祁玉', '页面不存在，可以回到首页或浏览作品。');
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-white px-6 pb-24 pt-32 text-center">

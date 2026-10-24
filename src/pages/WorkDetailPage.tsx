@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import ShareButton from '../components/ShareButton';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { works } from '../data/works';
 
 /*
@@ -19,9 +20,7 @@ export default function WorkDetailPage() {
   const prev = index > 0 ? works[index - 1] : null;
   const next = index >= 0 && index < works.length - 1 ? works[index + 1] : null;
 
-  useEffect(() => {
-    if (work) document.title = `${work.title} — 祁玉`;
-  }, [work]);
+  usePageMeta(`${work?.title ?? '作品'} — 祁玉`, work?.tagline ?? '精选项目与探索。');
 
   // 键盘 ← / → 切换作品
   useEffect(() => {

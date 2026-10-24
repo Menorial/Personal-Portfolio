@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
+import { usePageMeta } from '../hooks/usePageMeta';
 import { works } from '../data/works';
 import heroVideo from '../assets/hero-1080.mp4';
 import heroPoster from '../assets/hero-poster.jpg';
@@ -26,6 +27,7 @@ const PAUSE_KEY = 'hero-video-paused';
 
 export default function HomePage() {
   const [useStillImage, setUseStillImage] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
   const [playing, setPlaying] = useState(() => {
     try {
       return localStorage.getItem(PAUSE_KEY) !== '1';
@@ -35,9 +37,7 @@ export default function HomePage() {
   });
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    document.title = '祁玉 · 个人作品集';
-  }, []);
+  usePageMeta('祁玉 · 个人作品集', '以代码与智能，重塑数字世界的可能。AI 应用开发、自动化工具与全栈项目。');
 
   // 小屏省流量、减少动效时不播放视频，都用封面替代
   useEffect(() => {
@@ -47,6 +47,30 @@ export default function HomePage() {
     query.addEventListener('change', sync);
     return () => query.removeEventListener('change', sync);
   }, []);
+
+  // 视频延后到首屏渲染完再加载：先出封面和文字，避免 6 MB 视频抢首屏带宽
+  useEffect(() => {
+    if (useStillImage) return;
+
+    let cancelled = false;
+    const start = () => {
+      if (!cancelled) setShouldLoadVideo(true);
+    };
+
+    if (typeof window.requestIdleCallback === 'function') {
+      const handle = window.requestIdleCallback(start, { timeout: 1500 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(handle);
+      };
+    }
+
+    const timer = window.setTimeout(start, 300);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [useStillImage]);
 
   // 播放 / 暂停与持久化
   useEffect(() => {
@@ -62,20 +86,22 @@ export default function HomePage() {
     } catch {
       /* 隐私模式下忽略 */
     }
-  }, [playing, useStillImage]);
+  }, [playing, useStillImage, shouldLoadVideo]);
 
   return (
     <main>
       {/* 首屏 */}
       <section className="relative h-[100svh] w-full overflow-hidden bg-black">
-        {useStillImage ? (
+        {/* 封面先出，视频就绪后覆盖上去 */}
+        {(useStillImage || !shouldLoadVideo) && (
           <img
             src={POSTER_SRC}
             alt=""
             aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover"
           />
-        ) : (
+        )}
+        {!useStillImage && shouldLoadVideo && (
           <video
             ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover"
@@ -85,10 +111,16 @@ export default function HomePage() {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             aria-hidden="true"
           />
         )}
+
+        {/* 左侧暗色渐变：保证白字压在视频亮部时仍然可读 */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent"
+        />
 
         {/* 前景内容（导航为固定黑条，内容区避开顶部） */}
         <div className="absolute inset-0 flex flex-col justify-center px-8 pb-8 pt-[70px] max-[900px]:px-[18px] max-[900px]:pt-[90px]">

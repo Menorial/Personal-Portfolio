@@ -15,7 +15,8 @@ export default {
         'tile-2': '#2a2a2c',
         'tile-3': '#252527',
         'muted-80': '#333333',
-        'muted-48': '#7a7a7a',
+        // #6e6e73：白底对比度约 5.2:1，过 AA；原来的 #7a7a7a 只有 4.29:1
+        'muted-48': '#6e6e73',
         'muted-dark': '#cccccc',
         hairline: '#e0e0e0',
         chip: '#d2d2d7',

@@ -28,14 +28,21 @@ function WorkCard({
       delay={0.05}
       duration={0.6}
       y={20}
-      className="flex flex-col rounded-[18px] border border-hairline bg-white p-6"
+      className="group relative flex flex-col rounded-[18px] border border-hairline bg-white p-6 transition-colors hover:border-ink/25"
     >
+      {/* 整卡可点：铺满卡片的链接，图片按钮和 GitHub 提升层级后仍然独立可点 */}
+      <Link
+        to={`/work/${work.id}`}
+        aria-label={`查看 ${work.title} 详情`}
+        className="absolute inset-0 z-10 rounded-[18px]"
+      />
+
       {/* 作品图：有图可点开大图预览；无图显示占位 */}
       {image ? (
         <button
           type="button"
           onClick={() => onImageClick(image, work.title)}
-          className="block aspect-square w-full cursor-zoom-in overflow-hidden rounded-[8px] bg-[#e9e9ee] text-left"
+          className="relative z-20 block aspect-square w-full cursor-zoom-in overflow-hidden rounded-[8px] bg-[#e9e9ee] text-left"
           aria-label={`放大查看 ${work.title}`}
         >
           <img
@@ -65,11 +72,9 @@ function WorkCard({
         <p className="mt-3 text-[12px] leading-[1.43] text-muted-48/80">{work.tags.join(' · ')}</p>
       )}
 
-      {/* 链接行：详情页 + GitHub 直连仓库 */}
-      <div className="mt-5 flex items-center justify-between border-t border-black/5 pt-4">
-        <Link to={`/work/${work.id}`} className="text-[17px] text-primary hover:opacity-70">
-          查看详情
-        </Link>
+      {/* 链接行：整卡已可点，这里保留 GitHub 独立入口 */}
+      <div className="relative z-20 mt-5 flex items-center justify-between border-t border-black/5 pt-4">
+        <span className="text-[17px] text-primary group-hover:opacity-70">查看详情</span>
         <a
           href={work.githubHref}
           target="_blank"

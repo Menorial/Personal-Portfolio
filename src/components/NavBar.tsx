@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 /*
  * DESIGN.md global-nav — persistent ultra-thin black bar, 44px tall,
  * nav-link typography (12px / 400 / -0.12px tracking).
  * Collapses to hamburger at ≤ 834px (tablet landscape breakpoint).
+ * 移动端菜单：Esc 关闭、点击外部关闭、展开有轻微下滑动画。
  */
 const NAV_ITEMS = [
   { to: '/', label: '首页', end: true },
@@ -21,9 +22,32 @@ function NavLinkClass({ isActive }: { isActive: boolean; isPending: boolean; isT
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('touchstart', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('touchstart', onPointerDown);
+    };
+  }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-black text-white">
+    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 bg-black text-white">
       <nav className="mx-auto flex h-11 w-full max-w-[1440px] items-center justify-between px-5 sm:px-8">
         <Link
           to="/"
@@ -45,10 +69,11 @@ export default function NavBar() {
         {/* Mobile hamburger */}
         <button
           type="button"
-          aria-label="打开菜单"
+          aria-label={open ? '关闭菜单' : '打开菜单'}
           aria-expanded={open}
+          aria-controls="mobile-nav"
           className="flex h-11 w-11 items-center justify-center text-white min-[835px]:hidden"
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen((value) => !value)}
         >
           {open ? (
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -64,7 +89,10 @@ export default function NavBar() {
 
       {/* Mobile dropdown */}
       {open && (
-        <div className="flex flex-col gap-1 border-t border-white/10 bg-black px-5 py-3 min-[835px]:hidden">
+        <div
+          id="mobile-nav"
+          className="nav-drop flex flex-col gap-1 border-t border-white/10 bg-black px-5 py-3 min-[835px]:hidden"
+        >
           {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.to}

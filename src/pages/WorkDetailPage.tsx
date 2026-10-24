@@ -1,27 +1,46 @@
 import { useEffect } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
+import ShareButton from '../components/ShareButton';
 import { works } from '../data/works';
 
 /*
  * 作品详情页 /work/:id —— 完全由 src/data/works.ts 驱动：
  * 角色 / 项目介绍 / 关键点 / 图集 / 技术栈，
  * 字段为空时对应区块自动不渲染。
+ * 底部有上一个 / 下一个，支持键盘 ← → 切换。
  */
 export default function WorkDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const work = works.find((w) => w.id === id);
+  const index = work ? works.indexOf(work) : -1;
+  const prev = index > 0 ? works[index - 1] : null;
+  const next = index >= 0 && index < works.length - 1 ? works[index + 1] : null;
 
   useEffect(() => {
     if (work) document.title = `${work.title} — 祁玉`;
   }, [work]);
 
+  // 键盘 ← / → 切换作品
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.metaKey || event.ctrlKey || event.altKey || event.defaultPrevented) return;
+      const target = event.target as HTMLElement | null;
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+      if (event.key === 'ArrowLeft' && prev) navigate(`/work/${prev.id}`);
+      if (event.key === 'ArrowRight' && next) navigate(`/work/${next.id}`);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [navigate, prev, next]);
+
   if (!work) {
     return <Navigate to="/work" replace />;
   }
 
-  const number = String(works.indexOf(work) + 1).padStart(2, '0');
+  const number = String(index + 1).padStart(2, '0');
   const summaryParagraphs = work.summary?.split('\n\n').filter(Boolean) ?? [];
 
   return (
@@ -152,7 +171,34 @@ export default function WorkDetailPage() {
             <Link to="/work" className="btn-ghost">
               返回作品列表
             </Link>
+            <ShareButton title={work.title} />
           </FadeUp>
+
+          {/* 上一个 / 下一个 */}
+          {(prev || next) && (
+            <nav aria-label="作品导航" className="mt-16 grid gap-6 border-t border-hairline pt-8 sm:grid-cols-2">
+              {prev ? (
+                <Link to={`/work/${prev.id}`} className="group flex flex-col gap-1.5">
+                  <span className="text-[12px] tracking-[0.14em] text-muted-48">← 上一个</span>
+                  <span className="text-[17px] font-semibold text-ink transition-colors group-hover:text-primary">
+                    {prev.title}
+                  </span>
+                </Link>
+              ) : (
+                <span />
+              )}
+              {next ? (
+                <Link to={`/work/${next.id}`} className="group flex flex-col gap-1.5 sm:items-end sm:text-right">
+                  <span className="text-[12px] tracking-[0.14em] text-muted-48">下一个 →</span>
+                  <span className="text-[17px] font-semibold text-ink transition-colors group-hover:text-primary">
+                    {next.title}
+                  </span>
+                </Link>
+              ) : (
+                <span />
+              )}
+            </nav>
+          )}
         </div>
       </section>
 

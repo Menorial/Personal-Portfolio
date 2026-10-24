@@ -50,7 +50,29 @@ body {
     sans-serif;
 }
 
+@keyframes nav-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @layer components {
+  /* 移动端菜单展开动画 */
+  .nav-drop {
+    animation: nav-drop 0.16s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-drop {
+      animation: none;
+    }
+  }
+
   /* 淡入上浮（原 framer-motion FadeUp 的等价实现，见 components/FadeUp.tsx） */
   .fade-up {
     opacity: 0;

@@ -99,10 +99,11 @@ GitHub Pages 不支持 SPA rewrite。工作流会把 `dist/index.html` 复制成
 
 ## 上线前待办
 
-- [ ] `src/data/works.ts` 换成真实作品（角色、项目介绍、技术难点）
+- [x] 第一个真实作品：个人知识库（`id: knowledge-base`）
+- [ ] 继续补充作品：在 `works.ts` 里追加对象即可
 - [ ] `src/data/about.ts` 真实自我介绍、经历时间线、技能
 - [x] 联系方式：`src/data/site.ts`（邮箱 `suqiyu0852@163.com`、GitHub `Menorial`），微信已移除
 - [x] 作品详情页结构化：角色 / 项目介绍 / 关键点 / 图集 / 演示链接
 - [x] 技术标签筛选、自定义 404、复制邮箱、Lightbox 焦点陷阱
 - [x] `index.html` 社交分享图 `og.jpg`（1200×630，绝对地址）
-- [ ] 作品截图：放进 `public/images/`，在 `works.ts` 填 `imageHref` 和 `gallery`
+- [x] 作品配图：`public/images/` + `imageHref`（卡片封面）/ `heroImageHref`（详情主图）

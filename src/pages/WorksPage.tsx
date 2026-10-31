@@ -4,6 +4,7 @@ import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import Lightbox from '../components/Lightbox';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { assetUrl } from '../lib/asset';
 import { works, type WorkItem } from '../data/works';
 
 /*
@@ -21,7 +22,7 @@ function WorkCard({
   number: string;
   onImageClick: (image: string, title: string) => void;
 }) {
-  const image = work.imageHref;
+  const image = assetUrl(work.imageHref);
 
   return (
     <FadeUp

@@ -4,6 +4,7 @@ import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import ShareButton from '../components/ShareButton';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { assetUrl } from '../lib/asset';
 import { works } from '../data/works';
 
 /*
@@ -40,6 +41,7 @@ export default function WorkDetailPage() {
   }
 
   const number = String(index + 1).padStart(2, '0');
+  const heroImage = assetUrl(work.heroImageHref ?? work.imageHref);
   const summaryParagraphs = work.summary?.split('\n\n').filter(Boolean) ?? [];
 
   return (
@@ -78,9 +80,9 @@ export default function WorkDetailPage() {
 
           {/* 主图 */}
           <FadeUp as="div" delay={0.2} className="mt-10">
-            {work.imageHref ? (
+            {heroImage ? (
               <img
-                src={work.imageHref}
+                src={heroImage}
                 alt={work.title}
                 loading="lazy"
                 className="w-full rounded-[8px] object-cover"
@@ -131,7 +133,7 @@ export default function WorkDetailPage() {
               {work.gallery.map((src, i) => (
                 <FadeUp as="div" key={src} delay={i * 0.05}>
                   <img
-                    src={src}
+                    src={assetUrl(src)}
                     alt={`${work.title} 截图 ${i + 1}`}
                     loading="lazy"
                     className="w-full rounded-[8px] object-cover"

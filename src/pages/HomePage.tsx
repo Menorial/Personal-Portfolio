@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { assetUrl } from '../lib/asset';
 import { works } from '../data/works';
 import heroVideo from '../assets/hero-1080.mp4';
 import heroPoster from '../assets/hero-poster.jpg';
@@ -200,7 +201,7 @@ export default function HomePage() {
                 <Link to={`/work/${work.id}`} className="group flex h-full flex-col">
                   {work.imageHref ? (
                     <img
-                      src={work.imageHref}
+                      src={assetUrl(work.imageHref)}
                       alt={work.title}
                       loading="lazy"
                       className="aspect-[4/3] w-full rounded-[12px] object-cover transition-transform duration-300 group-hover:scale-[1.02]"

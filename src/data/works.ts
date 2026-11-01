@@ -61,4 +61,30 @@ export const works: WorkItem[] = [
     ],
     heroImageHref: 'images/knowledge-base-architecture.png',
   },
+  {
+    id: 'job-search-workbench',
+    title: 'AI 求职工作台',
+    tagline:
+      '通过 Chrome CDP 在你已登录的浏览器里读取职位，再用 AI 做简历匹配打分、投递话术和市场分析，全程在一个本地面板里完成。',
+    tags: ['Python', 'FastAPI', 'Chrome CDP', 'ECharts', 'DeepSeek'],
+    githubHref: 'https://github.com/Menorial/job-search-workbench',
+    imageHref: 'images/job-search-cover.jpg',
+    heroImageHref: 'images/job-search-how-it-works.jpg',
+    role: '独立开发（全栈）',
+    summary:
+      '背景：找工作时要反复在平台上筛职位、比对简历、写打招呼话术，这些动作高度重复。' +
+      '这个项目想把它做成一个本地工具——在自己已登录的浏览器里取数据，再用 AI 把「匹配 → 话术 → 市场分析」串起来。' +
+      '定位是个人学习与技术实践，不提供验证码破解或指纹伪造，并内置了节流与风控即停。\n\n' +
+      '技术方案：爬虫基于 Chrome DevTools Protocol 连接真实浏览器、复用登录态，支持关键词/城市/页数与详情抓取；' +
+      '后端 FastAPI 提供任务与数据接口，前端用 ECharts 做可视化面板；' +
+      'AI 侧接入 DeepSeek 兼容接口，简历解析成结构化 JSON 后先规则粗筛、再做 6 个维度的精评。\n\n' +
+      '结果：面板里可以完成爬取、简历上传、匹配、话术生成、市场报告的完整流程，长任务有实时进度、日志和停止按钮；' +
+      '数据全部落在本机 data/ 目录。项目包含 157 个 pytest 用例和 CI。',
+    highlights: [
+      '通过 Chrome CDP 复用已登录的浏览器上下文，不注入自动化特征；遇到风控码或连续失败会立即停止，避免越刷越糟。',
+      '断点续跑：详情按条追加写入 JSONL，中断不丢数据、下次自动跳过；跨页重复职位自动合并，失败按 attempts 重试且不会被误记成「已抓取」。',
+      'AI 匹配的缓存键绑定「职位 + 简历指纹」：简历没变时重跑零成本，简历一改则自动全部重评，避免复用过期分数。',
+      '面板把爬取、解析、匹配、话术、报告统一成子进程任务，实时进度 + 日志流 + 随时停止，关掉页面任务仍继续。',
+    ],
+  },
 ];

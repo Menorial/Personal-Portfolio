@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { FadeUp } from '../components/FadeUp';
 import Footer from '../components/Footer';
-import { INTRO, SKILLS, TIMELINE, type Skill } from '../data/about';
+import { assetUrl } from '../lib/asset';
+import { AVATAR, INTRO, SKILLS, TIMELINE, type Skill } from '../data/about';
 
 /*
  * 关于页 —— 白底居中，正文 17px / 1.47（DESIGN.md body token）
@@ -10,17 +12,24 @@ import { INTRO, SKILLS, TIMELINE, type Skill } from '../data/about';
 const LEVELS: Array<Skill['level']> = ['熟练', '了解'];
 
 export default function AboutPage() {
-  usePageMeta('关于 — 祁玉', '祁玉的个人介绍：背景、专注方向与技能。');
+  usePageMeta(
+    '关于 — 祁玉',
+    '祁玉：2024 年从 Java 后端入门，2025 年转向 AI 应用，现在做本地优先的 AI 工具。',
+  );
 
   return (
     <main className="min-h-screen bg-white">
       <section className="px-6 pb-24 pt-24 sm:pt-28">
         <div className="mx-auto w-full max-w-[860px]">
-          {/* 头像占位 */}
+          {/* 头像 */}
           <FadeUp as="div" delay={0}>
-            <div className="flex h-36 w-36 items-center justify-center rounded-[18px] bg-[#e9e9ee] text-[14px] text-muted-48">
-              头像占位
-            </div>
+            <img
+              src={assetUrl(AVATAR)}
+              alt="祁玉的头像"
+              width={144}
+              height={144}
+              className="h-36 w-36 rounded-[18px] object-cover ring-1 ring-black/5"
+            />
           </FadeUp>
 
           <FadeUp
@@ -81,6 +90,24 @@ export default function AboutPage() {
               );
             })}
           </div>
+
+          {/* 结尾引导 */}
+          <FadeUp as="div" delay={0.1} className="mt-20 rounded-[18px] bg-parchment p-8">
+            <p className="m-0 text-[21px] font-semibold leading-[1.35] text-ink">
+              想聊聊，或者看看能不能一起做点什么？
+            </p>
+            <p className="mb-0 mt-2 text-[15px] leading-[1.5] text-muted-48">
+              邮件或 GitHub 都能找到我，也欢迎直接看作品。
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-4">
+              <Link to="/contact" className="btn-primary">
+                联系我
+              </Link>
+              <Link to="/work" className="btn-ghost">
+                查看作品
+              </Link>
+            </div>
+          </FadeUp>
         </div>
       </section>
 

@@ -87,4 +87,28 @@ export const works: WorkItem[] = [
       '面板把爬取、解析、匹配、话术、报告统一成子进程任务，实时进度 + 日志流 + 随时停止，关掉页面任务仍继续。',
     ],
   },
+  {
+    id: 'auto-beauty-appointment',
+    title: '汽车美容服务预约平台',
+    tagline:
+      '本科毕业设计：Spring Boot + Vue 3 的前后端分离预约系统，车主选服务与时段、商家管项目与订单、员工看排班与工单，三端共用一套前端。',
+    tags: ['Java', 'Spring Boot', 'Vue 3', 'MySQL', 'JWT'],
+    githubHref: 'https://github.com/Menorial/Auto-Beauty-Service-Appointment-Platform',
+    imageHref: 'images/beauty-cover.jpg',
+    heroImageHref: 'images/beauty-architecture.jpg',
+    role: '独立开发（毕业设计）',
+    summary:
+      '背景：这是我本科的毕业设计，目标是给汽车美容门店做一套线上预约系统——车主挑服务项目和时段、商家维护项目与订单、' +
+      '员工查看分派给自己的工单和排班。三类角色共用一套前端，按角色分流到不同界面。\n\n' +
+      '技术方案：后端 Spring Boot 2.7 + Spring Security + JWT + Spring Data JPA + MySQL 8，前端 Vue 3 + Pinia + Element Plus + ECharts；' +
+      '部署时用 Nginx 托管静态资源并把 /api 反向代理到后端；支付接支付宝沙箱，用 RSA2 签名并处理异步回调回写支付状态。\n\n' +
+      '结果：8 张业务表、8 个业务模块，覆盖注册登录、车辆档案、时段预约、订单支付、评价互动、商家统计与员工工作台；' +
+      '订单状态机与支付状态分离，预约带时段冲突检测；数据库、JWT、支付等敏感配置全部外置为环境变量，仓库里没有真实凭据。',
+    highlights: [
+      '三角色权限模型：users.role 区分 USER / ADMIN / EMPLOYEE，员工账号通过 employee_id 关联员工档案，请求统一经 JWT 过滤器鉴权后再分发到各业务模块。',
+      '订单状态机与支付状态解耦：PENDING → CONFIRMED → IN_PROGRESS → COMPLETED，任一阶段可转 CANCELLED；支付单独维护 UNPAID / PAID / REFUNDED，避免出现「已预约未支付」的脏状态。',
+      '预约时段冲突检测 + order_no 唯一索引，用户端可以按订单号或车牌检索，取消与改期都会联动订单状态。',
+      '外部支付做成可降级：未配置支付宝密钥时只有支付链路不可用，其余模块照常运行；密钥、数据库口令等全部走环境变量。',
+    ],
+  },
 ];
